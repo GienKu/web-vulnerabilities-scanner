@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+
+  # Usługa nr 1: OWASP Juice Shop
+  juice-shop:
+    image: bkimminich/juice-shop 
+    container_name: juice-shop  
+    ports:
+      - "3000:3000"              # port 3000 na swoim komputerze na port 3000 w kontenerze
+
+  # Usługa nr 2: DVWA
+  dvwa:
+    image: vulnerables/web-dvwa  
+    container_name: dvwa         
+    ports:
+      - "8080:80"                # port 8080 na komputerze na port 80 w kontenerze

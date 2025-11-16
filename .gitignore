@@ -1,0 +1,61 @@
+# --- Środowisko Wirtualne Pythona ---
+# Ignoruj folder ze środowiskiem wirtualnym
+.venv/
+venv/
+env/
+ENV/
+
+# --- Pliki cache i skompilowane Pythona ---
+# Ignoruj foldery z pamięcią podręczną Pythona
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# --- Biblioteki i zależności ---
+# Ignoruj foldery instalacyjne pip i eggs
+*.egg-info/
+*.egg
+dist/
+build/
+*.whl
+
+# --- Pliki konfiguracyjne IDE i edytorów ---
+# Visual Studio Code
+.vscode/
+# PyCharm
+.idea/
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+# Atom
+.atom/
+# Vim
+*.swp
+*.swo
+
+# --- Pliki systemowe ---
+# macOS
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# --- Pliki generowane przez aplikację ---
+# Ignoruj logi i raporty generowane przez skaner
+*.log
+logs/
+reports/
+report-*.html
+scan_results.json
+
+# --- Pliki tymczasowe Playwright ---
+# Chociaż Playwright przechowuje przeglądarki globalnie,
+# mogą pojawić się lokalne pliki tymczasowe lub zrzuty ekranu z testów
+test-results/
+playwright-report/
