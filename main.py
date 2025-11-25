@@ -1,7 +1,9 @@
 # web-vulnerabilities-scanner/main.py
 
 import argparse
+import sys
 from core.crawler import Crawler
+from modules.sql_scanner import sql_scanner
 # from modules import sql_scanner, xss_scanner
 # from reporting import console_reporter
 
