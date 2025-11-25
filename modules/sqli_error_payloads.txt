@@ -1,0 +1,24 @@
+# Proste znaki ucieczki
+'
+"
+)
+(
+'
+"
+')
+")
+');
+");
+
+# Komentarze
+' --
+" --
+') --
+") --
+'; --
+"); --
+
+# Inne
+' OR 1=1
+" OR 1=1
+' OR 'a'='a
