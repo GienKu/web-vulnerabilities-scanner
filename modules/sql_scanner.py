@@ -56,7 +56,6 @@ class SQLInjector:
         """
         Główna metoda. Przyjmuje obiekt Request z Playwright i przeprowadza atak.
         """
-        # Ignorujemy zasoby statyczne
         if playwright_request.resource_type in ['image', 'stylesheet', 'font', 'script', 'media']:
             return []
 
@@ -70,7 +69,6 @@ class SQLInjector:
 
         findings = []
 
-        # --- Scenariusz 1: JSON (np. Juice Shop) ---
         if "application/json" in self.session.headers.get("content-type", "") or \
            (post_data and post_data.startswith("{")):
             try:
@@ -79,9 +77,7 @@ class SQLInjector:
             except json.JSONDecodeError:
                 pass
         
-        # --- Scenariusz 2: Metoda GET (Parametry URL) ---
         elif method == "GET":
-            # Sprawdzamy, czy w URL są jakiekolwiek parametry (znak '?')
             if "?" in url:
                 findings.extend(self._test_query_param_injection(url))
 
@@ -127,34 +123,25 @@ class SQLInjector:
         """
         findings = []
         
-        # 1. Parsowanie URL
         parsed_url = urlparse(full_url)
-        # base_url to np. "http://localhost:8080/vulnerabilities/sqli/" (bez parametrów)
         base_url = f"{parsed_url.scheme}://{parsed_url.netloc}{parsed_url.path}"
         
-        # params to słownik list, np. {'id': ['1'], 'action': ['view']}
         params = parse_qs(parsed_url.query)
 
         if not params:
             return []
 
-        # 2. Iteracja po każdym parametrze
         for param_name, param_values in params.items():
             print(f"  > Testowanie parametru URL: '{param_name}'")
             
-            # Zazwyczaj atakujemy pierwszą wartość, jeśli jest ich kilka dla jednego klucza
             original_value = param_values[0]
 
             for payload in error_based_payloads:
-                # Kopiujemy parametry, aby nie zepsuć oryginału dla kolejnych testów
                 test_params = params.copy()
                 
-                # Wstrzyknięcie: nadpisujemy wartość parametru, dodając payload
-                # requests.get obsługuje listy w params, ale dla precyzji spłaszczamy atakowany parametr
                 test_params[param_name] = original_value + payload
 
                 try:
-                    # Wysyłamy zapytanie GET na czysty URL z naszymi spreparowanymi parametrami
                     r = self.session.get(base_url, params=test_params, timeout=5)
 
                     if self._check_response_for_errors(r):
@@ -167,7 +154,6 @@ class SQLInjector:
                             "evidence": r.text[:100]
                         })
                         print(f"    [!!!] Znaleziono podatność SQLi w parametrze '{param_name}'!")
-                        # Przerywamy testowanie payloadów dla tego parametru, idziemy do następnego
                         break 
                 except Exception as e:
                     print(f"    Błąd połączenia: {e}")
@@ -190,5 +176,4 @@ class SQLInjector:
                 return True
         return False
 
-# Instancja do importu
 sql_scanner = SQLInjector()
